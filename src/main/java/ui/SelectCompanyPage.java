@@ -2,6 +2,8 @@ package ui;
 
 import po.Company;
 import ui.login.Login;
+import ui.main.MainPage;
+import ui.main.WindowParam;
 
 import javax.swing.*;
 import java.awt.event.*;

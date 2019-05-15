@@ -3,11 +3,13 @@ package net;
 
 import com.google.gson.Gson;
 import dto.GetCompanyListDto;
+import dto.PluginListDto;
+import dto.UploadPluginDto;
 import net.request.CommonRequest;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 /*
  * 外部请求同一放这里处理，同步获取
@@ -16,6 +18,9 @@ public class RequestManagement {
 
     private final static String BASE_URL = "http://localhost:8080/wms/";
 
+    /*
+     * 获取公司列表
+     */
     public static GetCompanyListDto getCompanyList() {
         Request request = CommonRequest.createGetRequest(BASE_URL + "getCompanyList",null);
         GetCompanyListDto subject = null;
@@ -27,6 +32,52 @@ public class RequestManagement {
                 subject = gson.fromJson(result, GetCompanyListDto.class);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return subject;
+    }
+
+    /*
+     * 获取插件列表
+     */
+    public static PluginListDto getPluginList() {
+        Request request = CommonRequest.createGetRequest(BASE_URL + "queryAllPlugin",null);
+        PluginListDto subject = null;
+        try {
+            Response response = CommonOkHttpClient.getSync(request);
+            if (response.isSuccessful()) {
+                String result = response.body().string();
+                Gson gson = new Gson();
+                subject = gson.fromJson(result, PluginListDto.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return subject;
+    }
+
+    public static UploadPluginDto uploadPlugin(File plugin, String name, String version, String nick) {
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", plugin.getName(),
+                        RequestBody.create(MediaType.parse("multipart/form-data"), plugin))
+                .addFormDataPart("pluginName", name)
+                .addFormDataPart("version", version)
+                .addFormDataPart("nick", nick)
+                .build();
+        Request request = new Request.Builder()
+                .url(BASE_URL + "uploadPlugin")
+                .post(requestBody)
+                .build();
+        UploadPluginDto subject = null;
+        try {
+            Response response = CommonOkHttpClient.getOkHttpClient().newCall(request).execute();
+            if (response.isSuccessful()) {
+                String result = response.body().string();
+                Gson gson = new Gson();
+                subject = gson.fromJson(result, UploadPluginDto.class);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return subject;

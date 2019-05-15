@@ -1,4 +1,4 @@
-package ui;
+package ui.main;
 
 import javax.swing.*;
 
@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import static ui.WindowParam.MAIN_WINDOW_HEIGHT;
-import static ui.WindowParam.MAIN_WINDOW_WIDTH;
+import static ui.main.WindowParam.MAIN_WINDOW_HEIGHT;
+import static ui.main.WindowParam.MAIN_WINDOW_WIDTH;
 
 public class MainPage extends JFrame{
 
@@ -28,7 +28,7 @@ public class MainPage extends JFrame{
                 System.exit(0);
             }});
 
-        this.add(new Tab(), BorderLayout.CENTER);
+        this.add(new MainTab(), BorderLayout.CENTER);
 
     }
 
