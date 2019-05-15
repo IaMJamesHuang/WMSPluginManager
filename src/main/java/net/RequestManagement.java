@@ -2,10 +2,9 @@ package net;
 
 
 import com.google.gson.Gson;
-import dto.GetCompanyListDto;
-import dto.PluginListDto;
-import dto.UploadPluginDto;
+import dto.*;
 import net.request.CommonRequest;
+import net.request.RequestParams;
 import okhttp3.*;
 
 import java.io.File;
@@ -56,6 +55,9 @@ public class RequestManagement {
         return subject;
     }
 
+    /*
+     * 上传插件
+     */
     public static UploadPluginDto uploadPlugin(File plugin, String name, String version, String nick) {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -76,6 +78,48 @@ public class RequestManagement {
                 String result = response.body().string();
                 Gson gson = new Gson();
                 subject = gson.fromJson(result, UploadPluginDto.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return subject;
+    }
+
+    /*
+     * 获取公司员工列表
+     */
+    public static GetCompanyUserDto getCompanyUserList(int companyId) {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("company_id", String.valueOf(companyId));
+        Request request = CommonRequest.createGetRequest(BASE_URL + "getCompanyUser",requestParams);
+        GetCompanyUserDto subject = null;
+        try {
+            Response response = CommonOkHttpClient.getSync(request);
+            if (response.isSuccessful()) {
+                String result = response.body().string();
+                Gson gson = new Gson();
+                subject = gson.fromJson(result, GetCompanyUserDto.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return subject;
+    }
+
+    /*
+     * 获取全部权限信息
+     */
+    public static PluginAccessDto queryPluginAccessList(int companyId) {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("company_id", String.valueOf(companyId));
+        Request request = CommonRequest.createGetRequest(BASE_URL + "getAccessList",requestParams);
+        PluginAccessDto subject = null;
+        try {
+            Response response = CommonOkHttpClient.getSync(request);
+            if (response.isSuccessful()) {
+                String result = response.body().string();
+                Gson gson = new Gson();
+                subject = gson.fromJson(result, PluginAccessDto.class);
             }
         } catch (IOException e) {
             e.printStackTrace();

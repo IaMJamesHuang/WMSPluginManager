@@ -40,7 +40,7 @@ public class RequestParams {
         }
     }
 
-    public void put(String key, Object object) throws FileNotFoundException {
+    public void put(String key, Object object) {
         if (key != null) {
             fileParams.put(key, object);
         }

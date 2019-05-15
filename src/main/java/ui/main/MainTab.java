@@ -1,5 +1,6 @@
 package ui.main;
 
+import ui.access.AccessPanel;
 import ui.plugin.PluginPanel;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ public class MainTab extends JPanel {
     public MainTab() {
         super(new GridLayout(1, 1));
         JTabbedPane tabbedPane = new JTabbedPane();
-        JComponent panel1 = makeTextPanel("权限管理");
+        JComponent panel1 = makeAccessPanel();
         tabbedPane.addTab("权限管理", null, panel1, "Does nothing");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         JComponent panel2 = makePluginPanel();
@@ -24,14 +25,8 @@ public class MainTab extends JPanel {
         return new PluginPanel();
     }
 
-    private JComponent makeTextPanel(String text) {
-        JPanel panel = new JPanel(false);
-        JLabel filler = new JLabel(text);
-        filler.setHorizontalAlignment(JLabel.CENTER);
-        panel.setLayout(new GridLayout(1, 1));
-        panel.add(filler);
-        return panel;
+    private JComponent makeAccessPanel() {
+        return new AccessPanel();
     }
-
 
 }

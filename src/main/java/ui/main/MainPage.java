@@ -1,5 +1,8 @@
 package ui.main;
 
+import po.Company;
+import ui.DataRepository;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -38,6 +41,9 @@ public class MainPage extends JFrame{
     }
 
     public static void main(String[] args) {
+        Company company = new Company();
+        company.setId(1);
+        DataRepository.setCompany(company);
         showMainPage();
     }
 

@@ -7,7 +7,6 @@ import ui.main.WindowParam;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SelectCompanyPage extends JDialog {
@@ -71,6 +70,7 @@ public class SelectCompanyPage extends JDialog {
         } else {
             Company company = mData.get(index);
             //跳到下个页面
+            DataRepository.setCompany(company);
             dispose();
             MainPage.showMainPage();
         }
@@ -94,11 +94,4 @@ public class SelectCompanyPage extends JDialog {
         dialog.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        Company company = new Company();
-        company.setName("阿里之门");
-        List<Company> list = new ArrayList<>();
-        list.add(company);
-        showPage(list);
-    }
 }
