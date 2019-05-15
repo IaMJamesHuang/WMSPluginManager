@@ -6,6 +6,7 @@ import dto.*;
 import net.request.CommonRequest;
 import net.request.RequestParams;
 import okhttp3.*;
+import po.UploadAccessBean;
 
 import java.io.File;
 import java.io.IOException;
@@ -120,6 +121,28 @@ public class RequestManagement {
                 String result = response.body().string();
                 Gson gson = new Gson();
                 subject = gson.fromJson(result, PluginAccessDto.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return subject;
+    }
+
+    public static UploadAccessDto uploadAccess(UploadAccessBean bean) {
+        Gson gson = new Gson();
+        String jsonInfo = gson.toJson(bean);
+        RequestBody body= RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonInfo);
+        Request request = new Request.Builder()
+                .url(BASE_URL + "uploadAccess")
+                .post(body)
+                .build();
+
+        UploadAccessDto subject = null;
+        try {
+            Response response = CommonOkHttpClient.getOkHttpClient().newCall(request).execute();
+            if (response.isSuccessful()) {
+                String result = response.body().string();
+                subject = gson.fromJson(result, UploadAccessDto.class);
             }
         } catch (IOException e) {
             e.printStackTrace();
